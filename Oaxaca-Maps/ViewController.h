@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 #import <CoreLocation/CoreLocation.h>
+#import <GoogleMaps/GoogleMaps.h>
 
-@interface ViewController : UIViewController<CLLocationManagerDelegate>
+@interface ViewController : UIViewController<CLLocationManagerDelegate, GMSMapViewDelegate>
 
 @property (strong, nonatomic) CLLocationManager     *locationManager;
 @property (strong, nonatomic) CLLocation            *location;

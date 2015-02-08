@@ -7,7 +7,6 @@
 //
 
 #import "ViewController.h"
-#import <GoogleMaps/GoogleMaps.h>
 
 NSString    *strUserLocation;
 float       mlatitude;
