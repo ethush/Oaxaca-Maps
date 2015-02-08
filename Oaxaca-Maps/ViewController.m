@@ -12,9 +12,9 @@ NSString    *strUserLocation;
 float       mlatitude;
 float       mlongitude;
 
-@interface ViewController (){
-    GMSMapView *mapView_;
-}
+GMSMapView *mapView;
+
+@interface ViewController ()
 
 @end
 
@@ -22,7 +22,6 @@ float       mlongitude;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
 //-------------------------------------------------------------------------------
 //Location
     self.locationManager                    = [[CLLocationManager alloc] init];
@@ -33,23 +32,7 @@ float       mlongitude;
     [self.locationManager  requestAlwaysAuthorization];
     
     [self.locationManager startUpdatingLocation];
-//-------------------------------------------------------------------------------
-//Google Maps
-    // Create a GMSCameraPosition that tells the map to display the
-    // coordinate -33.86,151.20 at zoom level 6.
-    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:-33.86
-                                                            longitude:151.20
-                                                                 zoom:16];
-    mapView_ = [GMSMapView mapWithFrame:CGRectZero camera:camera];
-    mapView_.myLocationEnabled = YES;
-    self.view = mapView_;
-    
-    // Creates a marker in the center of the map.
-    GMSMarker *marker = [[GMSMarker alloc] init];
-    marker.position = CLLocationCoordinate2DMake(-33.86, 151.20);
-    marker.title = @"Catedral de Sydney";
-    marker.snippet = @"Australia, tiera de los koalas";
-    marker.map = mapView_;
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -57,6 +40,27 @@ float       mlongitude;
     // Dispose of any resources that can be recreated.
 }
 
+- (void)paintMap
+{
+//-------------------------------------------------------------------------------
+//Google Maps
+    // Create a GMSCameraPosition that tells the map to display the
+    // coordinate -33.86,151.20 at zoom level 6.
+    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:mlatitude
+                                                            longitude:mlongitude
+                                                                 zoom:16];
+    mapView = [GMSMapView mapWithFrame:CGRectZero camera:camera];
+    mapView.frame = CGRectMake(0, 0, self.viewMap.frame.size.width, self.viewMap.frame.size.height);
+    mapView.myLocationEnabled = YES;
+
+    // Creates a marker in the center of the map.
+    GMSMarker *marker = [[GMSMarker alloc] init];
+    marker.position = CLLocationCoordinate2DMake(mlatitude, mlongitude);
+    marker.title = @"Master UAG";
+    marker.snippet = @"A punto de salir!";
+    marker.map = mapView;
+    [self.viewMap addSubview:mapView];
+}
 /**********************************************************************************************
 Localization
 **********************************************************************************************/
@@ -84,7 +88,10 @@ Localization
          //[mUserDefaults setObject: [[NSNumber numberWithFloat:mlatitude] stringValue] forKey: pmstrLatitude];
          NSLog(@"mlatitude = %f", mlatitude);
          NSLog(@"mlongitude = %f", mlongitude);
-         
 }];
+}
+- (IBAction)btnMapPressed:(id)sender
+{
+    [self paintMap];
 }
 @end
